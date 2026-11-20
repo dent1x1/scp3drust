@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCP: Secret Laboratory в Steam</title>
+<style>
+  :root{
+    --bg:#1b2838;
+    --bg-deep:#171a21;
+    --panel:#16202d;
+    --panel-2:#1f2f42;
+    --line:#2a3f55;
+    --accent:#66c0f4;
+    --accent-2:#a4d007;
+    --text:#c7d5e0;
+    --muted:#8f98a0;
+    --price:#beee11;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Motiva Sans","Segoe UI",Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    min-width:320px;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{color:#fff}
+  img{display:block;max-width:100%}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:var(--bg-deep);
+    border-bottom:1px solid #000;
+    font-size:13px;
+  }
+  .topbar-inner{
+    max-width:1100px;margin:0 auto;padding:0 16px;
+    display:flex;align-items:center;gap:22px;height:44px;
+  }
+  .logo{
+    display:flex;align-items:center;gap:8px;font-weight:700;
+    color:#fff;letter-spacing:.5px;font-size:16px;
+  }
+  .logo .dot{
+    width:26px;height:26px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,#66c0f4,#1a4a6b 70%);
+    box-shadow:0 0 10px rgba(102,192,244,.5);
+  }
+  .nav-links{display:flex;gap:18px;flex:1}
+  .nav-links a{color:#b8b6b4;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+  .nav-links a:hover{color:#fff}
+  .topbar .user{color:#b8b6b4;font-size:12px;display:flex;align-items:center;gap:8px}
+  .avatar{width:22px;height:22px;border-radius:3px;background:linear-gradient(135deg,#4b6a88,#22303f)}
+
+  /* ---------- Breadcrumbs ---------- */
+  .crumbs{
+    max-width:1100px;margin:0 auto;padding:14px 16px 4px;
+    font-size:11px;color:var(--muted);
+    display:flex;gap:6px;flex-wrap:wrap;
+  }
+  .crumbs a{color:var(--muted)}
+  .crumbs a:hover{color:var(--accent)}
+
+  /* ---------- Game header ---------- */
+  .game-head{
+    max-width:1100px;margin:0 auto;padding:8px 16px 0;
+  }
+  .game-title{
+    font-size:26px;font-weight:300;color:#fff;letter-spacing:.3px;
+    padding:2px 0 10px;
+  }
+  .screens{
+    display:grid;
+    grid-template-columns:1fr 320px;
+    gap:12px;
+  }
+  .main-shot{
+    position:relative;border-radius:2px;overflow:hidden;
+    aspect-ratio:16/9;background:#000;cursor:pointer;
+    box-shadow:0 0 18px rgba(0,0,0,.6);
+  }
+  .main-shot .scene{position:absolute;inset:0;transition:opacity .4s}
+  .shot-caption{
+    position:absolute;left:0;right:0;bottom:0;
+    padding:26px 16px 12px;font-size:13px;color:#dfe8ef;
+    background:linear-gradient(transparent,rgba(0,0,0,.85));
+  }
+  .thumbs{display:flex;flex-direction:column;gap:8px}
+  .thumb{
+    position:relative;border-radius:2px;overflow:hidden;cursor:pointer;
+    flex:1;min-height:52px;opacity:.65;transition:opacity .2s,box-shadow .2s;
+    background:#000;
+  }
+  .thumb:hover,.thumb.active{opacity:1;box-shadow:0 0 0 2px var(--accent)}
+  .thumb .scene{position:absolute;inset:0}
+  .thumb .label{
+    position:absolute;left:0;right:0;bottom:0;font-size:10px;
+    padding:10px 8px 4px;color:#dfe8ef;
+    background:linear-gradient(transparent,rgba(0,0,0,.8));
+  }
+
+  /* CSS "screenshots" */
+  .scene{background:#0b0f14}
+  .scene-1{background:
+      radial-gradient(ellipse at 50% 112%,rgba(190,0,0,.6),transparent 52%),
+      radial-gradient(ellipse at 18% 0%,rgba(60,90,120,.65),transparent 60%),
+      repeating-linear-gradient(90deg,rgba(255,255,255,.035) 0 1px,transparent 1px 72px),
+      repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 2px,transparent 2px 46px),
+      linear-gradient(#0c1117,#05080b);}
+  .scene-1::before{content:"";position:absolute;left:50%;bottom:18%;width:120px;height:210px;
+    transform:translateX(-50%);border-radius:46% 46% 30% 30%;
+    background:linear-gradient(#15191f,#05070a);
+    box-shadow:0 0 60px 10px rgba(200,30,30,.35),inset 0 0 30px #000;}
+  .scene-1::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.25) 3px 4px);}
+  .scene-2{background:
+      linear-gradient(90deg,rgba(0,0,0,.7),transparent 30%,transparent 70%,rgba(0,0,0,.7)),
+      repeating-linear-gradient(90deg,#2b3138 0 60px,#22282e 60px 64px,#1a1f24 64px 124px),
+      linear-gradient(#3a424b,#14181d);}
+  .scene-2::before{content:"";position:absolute;left:8%;top:20%;width:44%;height:60%;
+    background:linear-gradient(180deg,rgba(90,200,255,.12),rgba(90,200,255,.02));
+    border:1px solid rgba(90,200,255,.25);}
+  .scene-3{background:
+      radial-gradient(circle at 62% 42%,rgba(255,170,60,.9),rgba(200,80,0,.35) 22%,transparent 46%),
+      radial-gradient(circle at 62% 42%,rgba(255,220,120,.5),transparent 12%),
+      linear-gradient(#1a1208,#080603);}
+  .scene-3::after{content:"";position:absolute;inset:0;
+    background:repeating-linear-gradient(45deg,transparent 0 26px,rgba(255,140,0,.05) 26px 28px);}
+  .scene-4{background:
+      radial-gradient(ellipse at 50% 30%,rgba(120,20,160,.5),transparent 60%),
+      repeating-linear-gradient(115deg,rgba(255,255,255,.03) 0 2px,transparent 2px 18px),
+      linear-gradient(#0d0a14,#040306);}
+  .scene-4::before{content:"";position:absolute;left:50%;top:50%;width:70px;height:70px;
+    transform:translate(-50%,-50%);border-radius:50%;
+    border:2px solid rgba(200,120,255,.7);
+    box-shadow:0 0 40px rgba(160,60,255,.7),inset 0 0 30px rgba(160,60,255,.5);
+    animation:pulse 3.6s ease-in-out infinite;}
+  .scene-5{background:
+      radial-gradient(ellipse at 30% 90%,rgba(70,120,180,.45),transparent 60%),
+      repeating-linear-gradient(0deg,#26313c 0 5px,#1b242c 5px 9px),
+      linear-gradient(#101820,#060a0e);}
+  @keyframes pulse{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.12)}}
+
+  /* ---------- Purchase bar ---------- */
+  .purchase-wrap{
+    max-width:1100px;margin:0 auto;padding:0 16px;
+  }
+  .purchase{
+    background:linear-gradient(135deg,#1f3548,#16222f 60%);
+    border:1px solid var(--line);
+    margin-top:12px;
+    display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+    padding:12px 16px;
+  }
+  .purchase .title-mini{font-size:14px;color:#fff;flex:1;min-width:180px}
+  .purchase .title-mini small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+  .discount{
+    background:var(--accent-2);color:#1b2838;font-weight:700;
+    padding:4px 8px;font-size:18px;border-radius:2px;
+  }
+  .price-box{text-align:right;line-height:1.1}
+  .price-old{color:#738895;font-size:12px;text-decoration:line-through}
+  .price-new{color:var(--price);font-size:20px;font-weight:600}
+  .btn{
+    display:inline-block;border:none;cursor:pointer;border-radius:2px;
+    padding:9px 20px;font-size:14px;font-weight:600;font-family:inherit;
+    background:linear-gradient(180deg,#75b022,#588a1b);
+    color:#d2efa9;text-shadow:0 1px 0 rgba(0,0,0,.3);
+    transition:filter .15s;
+  }
+  .btn:hover{filter:brightness(1.15);color:#fff}
+  .btn.ghost{
+    background:linear-gradient(180deg,#3a4b5a,#2b3947);
+    color:#c7d5e0;
+  }
+
+  /* ---------- Layout ---------- */
+  .page{
+    max-width:1100px;margin:0 auto;padding:20px 16px 60px;
+    display:grid;grid-template-columns:1fr 320px;gap:28px;
+  }
+  .card{
+    background:var(--panel);border:1px solid var(--line);
+    padding:18px;margin-bottom:20px;
+  }
+  .card h2{
+    font-size:13px;font-weight:600;color:#fff;text-transform:uppercase;
+    letter-spacing:.6px;margin-bottom:12px;
+    padding-bottom:8px;border-bottom:1px solid var(--line);
+  }
+  .card p{margin-bottom:12px;font-size:14px;color:var(--text)}
+  .card p:last-child{margin-bottom:0}
+  .accent-line{color:var(--accent)}
+
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{
+    background:rgba(102,192,244,.12);color:#67c1f5;
+    font-size:11px;padding:3px 8px;border-radius:2px;
+  }
+  .tag:hover{background:#67c1f5;color:#fff}
+
+  .reviews{display:grid;gap:10px}
+  .review{background:var(--panel-2);padding:12px;border-left:3px solid var(--accent-2)}
+  .review .who{font-size:12px;color:var(--muted);margin-bottom:4px}
+  .review .who b{color:#fff}
+  .review p{font-size:13px;margin:0}
+
+  .sidebar .card{padding:16px}
+  .cover{
+    aspect-ratio:16/9;border-radius:2px;overflow:hidden;position:relative;
+    background:#000;margin-bottom:14px;
+  }
+  .meta-row{
+    display:flex;justify-content:space-between;gap:10px;
+    font-size:12px;padding:6px 0;border-bottom:1px solid rgba(42,63,85,.6);
+  }
+  .meta-row:last-of-type{border-bottom:none}
+  .meta-row .k{color:var(--muted)}
+  .meta-row .v{color:#fff;text-align:right}
+  .verdict{
+    background:rgba(164,208,7,.12);border:1px solid rgba(164,208,7,.35);
+    color:#d6e79a;font-size:12px;padding:10px;margin-bottom:14px;border-radius:2px;
+  }
+  .verdict b{color:#fff}
+  .stat-bar{
+    height:6px;border-radius:3px;background:#0d141c;overflow:hidden;margin:6px 0 10px;
+    display:flex;
+  }
+  .stat-bar span{height:100%}
+  .stat-pos{background:#66c0f4}
+  .stat-neg{background:#e05656}
+
+  table.req{width:100%;font-size:13px;border-collapse:collapse}
+  table.req th{color:var(--muted);font-weight:400;text-align:left;padding:5px 8px 5px 0;width:110px;vertical-align:top}
+  table.req td{padding:5px 0;color:#dbe4ea;vertical-align:top}
+  table.req tr{border-bottom:1px solid rgba(42,63,85,.5)}
+  table.req tr:last-child{border-bottom:none}
+
+  .notice{
+    font-size:11px;color:var(--muted);line-height:1.5;
+    border-top:1px solid var(--line);padding-top:10px;margin-top:14px;
+  }
+
+  footer{
+    background:var(--bg-deep);border-top:1px solid #000;
+    padding:24px 16px;font-size:11px;color:#5d6a73;
+  }
+  footer .inner{max-width:1100px;margin:0 auto;display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
+  footer a{color:#7c8b95}
+
+  @media (max-width:900px){
+    .screens{grid-template-columns:1fr}
+    .thumbs{flex-direction:row;height:74px}
+    .page{grid-template-columns:1fr}
+    .nav-links{display:none}
+    .purchase{gap:10px}
+  }
+</style>
+</head>
+<body>
+
+<!-- top bar -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="#"><span class="dot"></span>STEAM</a>
+    <div class="nav-links">
+      <a href="#">Магазин</a>
+      <a href="#">Библиотека</a>
+      <a href="#">Сообщество</a>
+      <a href="#">Новое</a>
+    </div>
+    <div class="user"><span class="avatar"></span>Administrator</div>
+  </div>
+</div>
+
+<div class="crumbs">
+  <a href="#">Все игры</a> <span>›</span>
+  <a href="#">Экшен</a> <span>›</span>
+  <a href="#">Хоррор</a> <span>›</span>
+  <span style="color:#c7d5e0">SCP: Secret Laboratory</span>
+</div>
+
+<div class="game-head">
+  <div class="game-title">SCP: Secret Laboratory</div>
+  <div class="screens">
+    <div class="main-shot" id="mainShot">
+      <div class="scene scene-1" id="mainScene"></div>
+      <div class="shot-caption" id="mainCaption">Зона содержания — 173 больше не в камере</div>
+    </div>
+    <div class="thumbs" id="thumbs">
+      <div class="thumb active" data-scene="scene-1" data-caption="Зона содержания — 173 больше не в камере"><div class="scene scene-1"></div><span class="label">Зона содержания</span></div>
+      <div class="thumb" data-scene="scene-2" data-caption="Комплекс — лабиринт коридоров и КПП"><div class="scene scene-2"></div><span class="label">Комплекс</span></div>
+      <div class="thumb" data-scene="scene-3" data-caption="Взрыв боеголовки — конец раунда близко"><div class="scene scene-3"></div><span class="label">Эвакуация</span></div>
+      <div class="thumb" data-scene="scene-4" data-caption="Объект в темноте — не смотрите ему в глаза"><div class="scene scene-4"></div><span class="label">Аномалия</span></div>
+      <div class="thumb" data-scene="scene-5" data-caption="Отряд МОГ прибыл на объект"><div class="scene scene-5"></div><span class="label">МОГ</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="purchase-wrap">
+  <div class="purchase">
+    <div class="title-mini">
+      SCP: Secret Laboratory
+      <small>Купить SCP: Secret Laboratory</small>
+    </div>
+    <div class="discount">−100%</div>
+    <div class="price-box">
+      <div class="price-old">0 руб.</div>
+      <div class="price-new">Бесплатно</div>
+    </div>
+    <button class="btn">Играть бесплатно</button>
+    <button class="btn ghost">В список желаемого</button>
+  </div>
+</div>
+
+<div class="page">
+  <!-- main column -->
+  <main>
+    <div class="card">
+      <h2>Об этой игре</h2>
+      <p><span class="accent-line">SCP: Secret Laboratory</span> — многопользовательский хоррор от третьего лица, основанный на вселенной SCP Foundation. Вы оказываетесь в огромном подземном комплексе, где произошла катастрофа: системы безопасности вышли из строя, а объекты вырвались на свободу.</p>
+      <p>В каждом раунде роли распределяются случайно. Можно стать <b>учёным</b> и попытаться выбраться наружу, <b>солдатом МОГ</b> и зачистить комплекс, либо одним из <b>SCP-объектов</b> — существ с уникальными способностями, для которых люди лишь добыча.</p>
+      <p>Комплекс живёт своей жизнью: двери блокируются, свет гаснет, а где-то в глубине тикает таймер боеголовки. Договаривайтесь, предавайте, бегите — и помните: <i>это не победа, если выжил только ты.</i></p>
+    </div>
+
+    <div class="card">
+      <h2>Ключевые особенности</h2>
+      <p>▸ <b>До 40 игроков</b> в одном раунде и постоянно меняющийся состав ролей.</p>
+      <p>▸ <b>Уникальные SCP</b>: телепортация, управление разумом, темнота, плоть и другие аномалии.</p>
+      <p>▸ <b>Голосовой чат</b> с позиционированием — слышно, кто и откуда кричит.</p>
+      <p>▸ <b>Процедурные раунды</b>: боеголовка, эвакуация, предательство и хаос каждые 15 минут.</p>
+      <p>▸ <b>Бесплатно навсегда</b> — без обязательных покупок и подписок.</p>
+    </div>
+
+    <div class="card">
+      <h2>Отзывы игроков</h2>
+      <div class="reviews">
+        <div class="review">
+          <div class="who"><b>Доктор Кляйн</b> · 128 ч в игре</div>
+          <p>Зашёл на пять минут в 2019-м. Всё ещё пытаюсь выйти из комплекса. Рекомендую.</p>
+        </div>
+        <div class="review">
+          <div class="who"><b>SCP-173</b> · 666 ч в игре</div>
+          <p>Отличная игра. Много моргающих людей. Особенно нравится, когда они отворачиваются.</p>
+        </div>
+        <div class="review">
+          <div class="who"><b>Рядовой МОГ</b> · 42 ч в игре</div>
+          <p>Прибыли на объект, никого не спасли, боеголовка сработала. 10/10, повторим.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Метки</h2>
+      <div class="tags">
+        <a class="tag" href="#">Хоррор</a>
+        <a class="tag" href="#">Экшен</a>
+        <a class="tag" href="#">Многопользовательская</a>
+        <a class="tag" href="#">Выживание</a>
+        <a class="tag" href="#">Шутер от первого лица</a>
+        <a class="tag" href="#">Бесплатная</a>
+        <a class="tag" href="#">Кооператив</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <div class="card">
+      <div class="cover"><div class="scene scene-5"></div></div>
+      <div class="verdict"><b>Очень положительные</b><br>18 472 обзора игроков</div>
+      <div class="stat-bar">
+        <span class="stat-pos" style="width:82%"></span>
+        <span class="stat-neg" style="width:18%"></span>
+      </div>
+      <div class="meta-row"><span class="k">Дата выхода</span><span class="v">29 дек. 2017</span></div>
+      <div class="meta-row"><span class="k">Разработчик</span><span class="v">Northwood Studios</span></div>
+      <div class="meta-row"><span class="k">Издатель</span><span class="v">Northwood Studios</span></div>
+      <div class="meta-row"><span class="k">Платформа</span><span class="v">Windows, Linux</span></div>
+      <div class="meta-row"><span class="k">Режим</span><span class="v">Многопользовательский</span></div>
+      <div class="notice">
+        Игра распространяется бесплатно. Все совпадения с реальными аномалиями случайны.
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Системные требования</h2>
+      <table class="req">
+        <tr><th>ОС</th><td>Windows 10 / Linux</td></tr>
+        <tr><th>Процессор</th><td>Intel Core i3 / AMD FX-6300</td></tr>
+        <tr><th>Память</th><td>8 ГБ ОЗУ</td></tr>
+        <tr><th>Видеокарта</th><td>GTX 660 / RX 560</td></tr>
+        <tr><th>Диск</th><td>6 ГБ</td></tr>
+        <tr><th>Сеть</th><td>Широкополосное подключение</td></tr>
+      </table>
+    </div>
+  </aside>
+</div>
+
+<footer>
+  <div class="inner">
+    <span>© 2026 SCP: Secret Laboratory — фанатская страница в стиле Steam. Не связана с Valve.</span>
+    <span><a href="#">Конфиденциальность</a> · <a href="#">Правовая информация</a> · <a href="#">Поддержка</a></span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    const mainScene = document.getElementById('mainScene');
+    const mainCaption = document.getElementById('mainCaption');
+    const thumbs = [...document.querySelectorAll('.thumb')];
+
+    thumbs.forEach(t => {
+      t.addEventListener('click', () => {
+        thumbs.forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        mainScene.className = 'scene ' + t.dataset.scene;
+        mainCaption.textContent = t.dataset.caption;
+        // subtle fade-in
+        mainScene.animate(
+          [{opacity: 0}, {opacity: 1}],
+          {duration: 350, easing: 'ease-out'}
+        );
+      });
+    });
+
+    const buy = document.querySelector('.btn');
+    buy.addEventListener('click', () => {
+      buy.textContent = 'Добавлено в библиотеку ✓';
+      buy.style.background = 'linear-gradient(180deg,#3a4b5a,#2b3947)';
+      setTimeout(() => {
+        buy.textContent = 'Играть бесплатно';
+        buy.style.background = '';
+      }, 2200);
+    });
+  })();
+</script>
+</body>
+</html>
